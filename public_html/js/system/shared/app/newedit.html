@@ -1,0 +1,227 @@
+<!--
+/*
+ * Copyright (c) 2017 by Rafael Angel Aznar Aparici (rafaaznar at gmail dot com)
+ *
+ * TROLLEYES helps you to learn how to develop easily AJAX web applications
+ *
+ * Sources at https://github.com/rafaelaznar/trolleyes
+ *
+ * TROLLEYES is distributed under the MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+-->
+<menu></menu>
+<div id="wrapper" ng-cloak>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <header ob="ob" op="op"></header>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-success" role="alert" ng-if="debugging">
+                            <h4>Debug:</h4>
+                            {{bean|json}}
+                        </div>
+                        <form name="outerForm" class="form-horizontal text-left"  ng-if="!status">
+                            <div ng-repeat="f in metap">
+                                <!--- id ---------------------------------------------->
+                                <div ng-if="f.Type == 'Id'" class="form-group" id="{{f.Name}}-group">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}"
+                                               ng-model="bean[f.Name]"
+                                               placeholder="{{f.Description}}"
+                                               size="15"
+                                               disabled />
+                                    </div>
+                                </div>
+                                <!-- string ------------------------------------------------>
+                                <div ng-if="f.Type == 'String'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error':(outerForm[f.Name].$error.pattern && !outerForm[f.Name].$pristine) ||
+                                                             (outerForm[f.Name].$error.required && !outerForm[f.Name].$pristine)}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}"
+                                               ng-model="bean[f.Name]"
+                                               ng-pattern="f.RegexPattern"
+                                               placeholder="{{f.Description}}"
+                                               maxlength="9"
+                                               ng-required="f.IsRequired"
+                                               />
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.pattern">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
+                                    </div>
+                                </div>
+                                <!-- integer ------------------------------------------------>
+                                 <div ng-if="f.Type == 'Integer'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error':(outerForm[f.Name].$error.pattern && !outerForm[f.Name].$pristine) ||
+                                                             (outerForm[f.Name].$error.required && !outerForm[f.Name].$pristine)}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}"
+                                               ng-model="bean[f.Name]"
+                                               ng-pattern="f.RegexPattern"
+                                               placeholder="{{f.Description}}"
+                                               maxlength="9"
+                                               ng-required="f.IsRequired"
+                                               />
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.pattern">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
+                                    </div>
+                                </div>
+                                <!-- decimal ------------------------------------------------>
+                                <div ng-if="f.Type == 'Decimal'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error':(outerForm[f.Name].$error.pattern && !outerForm[f.Name].$pristine) ||
+                                                             (outerForm[f.Name].$error.required && !outerForm[f.Name].$pristine)}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}"
+                                               ng-model="bean[f.Name]"
+                                               ng-pattern="f.RegexPattern"
+                                               placeholder="{{f.Description}}"
+                                               maxlength="9"
+                                               ng-required="f.IsRequired"
+                                               />
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.pattern">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
+                                    </div>
+                                </div>
+                                <!-- date ------------------------------------------------>
+                                <div ng-if="f.Type == 'Date'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error': (outerForm[f.Name].$error.required || outerForm[f.Name].$error.valid) && !outerForm[f.Name].$pristine}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <date-time-picker
+                                            name="f.Name"
+                                            required="f.Required"
+                                            model="bean[f.Name]"
+                                            form="outerForm">
+                                        </date-time-picker>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.valid">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
+                                    </div>
+                                </div>
+                                <!-- boolean ------------------------------------------------>
+                                <div ng-if="f.Type == 'Boolean'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error': (outerForm[f.Name].$error.required || outerForm[f.Name].$error.valid) && !outerForm[f.Name].$pristine}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input
+                                               ng-model="bean[f.name]"
+                                               type="checkbox"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}">
+                                    </div>
+                                </div>
+                                <!-- foreign ----------------------------------------------->
+                                <div ng-if="f.Type == 'ForeignObject'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error': outerForm[f.Name].$error.exists}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <foreign-key
+                                            bean="bean[f.Name]"
+                                            form="outerForm"
+                                            name="f.Name"
+                                            reference="f.References"
+                                            profile="profile"
+                                            required="f.Required">
+                                        </foreign-key>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.exists">La clave elegida no existe</span>
+                                    </div>
+                                </div>
+                                <!------------------------------------------------->
+                            </div>
+                            <div class="control-group text-right">
+                                <div class="controls">
+                                    <a class="btn btn-primary" ng-click="save()" ng-disabled="!outerForm.$valid">Guardar</a>
+                                    <a class="btn btn-info" ng-href="{{ob}}/{{profile}}/plist">Ir al listado de {{ob}}</a>
+                                    <a class="btn btn-default" ng-click="back()">Volver</a>
+                                    <a class="btn btn-default" ng-click="close()">Cerrar</a>
+                                </div>
+                            </div>
+                            <!------------------------------------------------->
+                        </form>
+                        <div ng-if="status">
+                            <div class="alert alert-success" ng-if="response.status == 200">
+                                <h2>{{status}}</h2>
+                                <div class="control-group text-right">
+                                    <div class="controls">
+                                        <a class="btn btn-success" ng-href="{{ob}}/{{profile}}/view/{{bean.id}}">Ver registro</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" ng-if="response.status != 200">
+                                <div class="control-group text-right">
+                                    <div class="controls">
+                                        <h2>{{status}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group text-right">
+                                <div class="controls">
+                                    <a class="btn btn-info" ng-href="{{ob}}/{{profile}}/plist">Ir al listado</a>
+                                    <a class="btn btn-default" ng-click="back()">Volver</a>
+                                    <a class="btn btn-default" href="home">Cerrar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer" style="font-family: Questrial, serif;" ng-include="'js/system/include/footer.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
